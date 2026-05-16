@@ -12,11 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private Resend resend;
+    private final Resend resend;
 
     @Value("${resend.mail.from}")
     private String fromAddress;
+
+    @Autowired
+    public EmailServiceImpl(Resend resend) {
+        this.resend = resend;
+    }
 
     // metodo enviar correo Reservas
     @Override

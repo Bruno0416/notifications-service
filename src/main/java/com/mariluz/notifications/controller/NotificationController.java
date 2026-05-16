@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/notifications")
 public class NotificationController {
 
+    private final EmailService service;
+
     @Autowired
-    private EmailService service;
+    public NotificationController(EmailService service) {
+        this.service = service;
+    }
 
     // Reservas
     @PostMapping("/reservation")
