@@ -28,18 +28,18 @@ public class NotificationController {
     public ResponseEntity<String> sendReservation(
         @Valid @RequestBody ReservationRequest request
     ) throws ResendException {
-        boolean isCancel = Boolean.TRUE.equals(request.getIsCancellation()); // si llega como null lo dejamos como false
-
+        // ResendException es checked, el GlobalExceptionHandler la gestiona en runtime
         service.sendReservationEmail(
             request.getEmail(),
             request.getTitle(),
             request.getBody(),
-            isCancel
+            Boolean.TRUE
+                .equals(request.getCancellation()) // si llega como null lo dejamos como false
         );
-        String status = request.getIsCancellation()
+        String status = Boolean.TRUE.equals(request.getCancellation())
             ? "cancelación"
             : "confirmación";
-        return ResponseEntity.ok("Correo de " + status + " envida.");
+        return ResponseEntity.ok("Correo de " + status + " enviado.");
     }
 
     // compras
@@ -47,11 +47,12 @@ public class NotificationController {
     public ResponseEntity<String> sendPurchase(
         @Valid @RequestBody PurchaseRequest request
     ) throws ResendException {
+        // ResendException es checked, el GlobalExceptionHandler la gestiona en runtime
         service.sendPurchaseEmail(
             request.getEmail(),
             request.getTitle(),
             request.getProducts()
         );
-        return ResponseEntity.ok("Correo de reserva envida.");
+        return ResponseEntity.ok("Correo de compra enviado.");
     }
 }
