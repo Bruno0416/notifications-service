@@ -4,7 +4,6 @@ import com.mariluz.notifications.dto.PurchaseRequest;
 import com.mariluz.notifications.dto.ReservationRequest;
 import com.mariluz.notifications.service.EmailService;
 import com.resend.core.exception.ResendException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +26,7 @@ public class NotificationController implements NotificationApi {
     @Override
     @PostMapping("/reservation")
     public ResponseEntity<String> sendReservation(
-        @Valid @RequestBody ReservationRequest request
+        @RequestBody ReservationRequest request
     ) throws ResendException {
         // ResendException es checked, el GlobalExceptionHandler la gestiona en runtime
         service.sendReservationEmail(
@@ -46,7 +45,7 @@ public class NotificationController implements NotificationApi {
     @Override
     @PostMapping("/purchase")
     public ResponseEntity<String> sendPurchase(
-        @Valid @RequestBody PurchaseRequest request
+        @RequestBody PurchaseRequest request
     ) throws ResendException {
         // ResendException es checked, el GlobalExceptionHandler la gestiona en runtime
         service.sendPurchaseEmail(
