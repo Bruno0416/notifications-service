@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/notifications")
-public class NotificationController {
+public class NotificationController implements NotificationApi {
 
     private final EmailService service;
 
@@ -24,6 +24,7 @@ public class NotificationController {
     }
 
     // Reservas
+    @Override
     @PostMapping("/reservation")
     public ResponseEntity<String> sendReservation(
         @Valid @RequestBody ReservationRequest request
@@ -33,8 +34,7 @@ public class NotificationController {
             request.getEmail(),
             request.getTitle(),
             request.getBody(),
-            Boolean.TRUE
-                .equals(request.getCancellation()) // si llega como null lo dejamos como false
+            Boolean.TRUE.equals(request.getCancellation()) // si llega como null lo dejamos como false
         );
         String status = Boolean.TRUE.equals(request.getCancellation())
             ? "cancelación"
@@ -43,6 +43,7 @@ public class NotificationController {
     }
 
     // compras
+    @Override
     @PostMapping("/purchase")
     public ResponseEntity<String> sendPurchase(
         @Valid @RequestBody PurchaseRequest request
